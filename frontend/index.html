@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Form
+    </h1>
+    <label>Full Name</label>
+    <input type="text" id="name_">
+    <label>Number</label>
+    <input type="number" id="phone"><br>
+    <button onclick="submit()">Submit</button>
+    <hr>
+
+    <h1>GET YOUR NUMBER</h1>
+    <label>Add your id here </label>
+    <input type="text" id="get_id">
+    <button onclick="get_number()">GO</button><br>
+    <div id="find_num"></div>
+    <hr>
+
+    <h1>UPDATE YOUR NUMBER</h1>
+    <label>id</label>
+    <input type="text" id="update_id">
+    <input type="text" placeholder="Your name" id="update_name">
+    <input type="number" placeholder="updated number" id="update_phone">
+    <button onclick="update()">GO</button><br>
+    <hr>
+
+    <h1>Delete data</h1>
+    <label>id</label>
+    <input type="text" id="delete_id">
+    <button onclick="delete_()">GO</button><br>
+    <script>
+        const submit=()=>{
+            const name_=document.getElementById("name_").value;
+            const phone=document.getElementById("phone").value;
+            fetch("http://localhost:3001",{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    name:name_,
+                    phone:phone
+                })
+            });
+        }
+        const get_number=()=>{
+            const id=document.getElementById("get_id").value;
+            fetch("http://localhost:3001/"+id,{method:"GET"})
+            .then(res=>res.json())
+            .then(data=>document.getElementById("find_num").innerText=data.user.phone);
+        }
+        const update=()=>{
+            const id=document.getElementById("update_id").value;
+            const name_=document.getElementById("update_name").value;
+            const phone=document.getElementById("update_phone").value;
+            fetch("http://localhost:3001/"+id,{
+                method:"PUT",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    name:name_,
+                    phone:phone
+                })
+            });
+        }
+        const delete_=()=>{
+            const id=document.getElementById("delete_id").value;
+            fetch("http://localhost:3001/"+id,{
+                method:"DELETE",
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    </script>
+</body>
+</html>
